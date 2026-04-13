@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 interface Course {
   id: string;
@@ -42,6 +43,18 @@ export default function CoursesPage() {
   if (loading) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <nav className="border-b border-white/10 backdrop-blur-sm bg-white/5">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <Link href="/" className="text-2xl font-bold text-white">CourseHub</Link>
+              <div className="flex items-center gap-6">
+                <Link href="/courses" className="text-white">Courses</Link>
+                <Link href="/dashboard" className="text-gray-300 hover:text-white">My Learning</Link>
+                <Link href="/auth" className="px-4 py-2 bg-purple-600 text-white rounded-lg">Sign In</Link>
+              </div>
+            </div>
+          </div>
+        </nav>
         <div className="container mx-auto px-4 py-8">
           <div className="text-center text-white text-xl">Loading courses...</div>
         </div>
@@ -51,6 +64,20 @@ export default function CoursesPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Navigation */}
+      <nav className="border-b border-white/10 backdrop-blur-sm bg-white/5">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="text-2xl font-bold text-white">CourseHub</Link>
+            <div className="flex items-center gap-6">
+              <Link href="/courses" className="text-white font-semibold">Courses</Link>
+              <Link href="/dashboard" className="text-gray-300 hover:text-white transition-colors">My Learning</Link>
+              <Link href="/auth" className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all">Sign In</Link>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -87,7 +114,7 @@ export default function CoursesPage() {
         {/* Course Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {courses.map((course) => (
-            <div key={course.id} className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden hover:border-purple-500/50 transition-all group cursor-pointer">
+            <Link key={course.id} href={`/courses/${course.id}`} className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden hover:border-purple-500/50 transition-all group cursor-pointer">
               <div className="h-48 bg-gradient-to-br from-blue-500/20 to-purple-500/20 relative">
                 {course.discountPrice && (
                   <div className="absolute top-3 right-3 px-3 py-1 bg-purple-600 text-white text-sm rounded-full">
@@ -115,12 +142,12 @@ export default function CoursesPage() {
                       <span className="text-sm text-gray-400 line-through ml-2">${course.price}</span>
                     )}
                   </div>
-                  <button className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm hover:bg-purple-700 transition-colors">
+                  <span className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm group-hover:bg-purple-700 transition-colors">
                     View
-                  </button>
+                  </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
