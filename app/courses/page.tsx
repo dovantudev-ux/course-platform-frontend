@@ -27,11 +27,10 @@ export default function CoursesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://152.69.205.111:5000/api';
-    fetch(`${API_URL}/courses`)
+    fetch('/api/courses')
       .then(res => res.json())
       .then(data => {
-        setCourses(data.courses);
+        setCourses(data.courses || []);
         setLoading(false);
       })
       .catch(err => {

@@ -13,10 +13,9 @@ export default function HomePage() {
   const [courses, setCourses] = useState<Course[]>([]);
 
   useEffect(() => {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://152.69.205.111:5000/api';
-    fetch(`${API_URL}/courses?limit=3`)
+    fetch('/api/courses?limit=3')
       .then(res => res.json())
-      .then(data => setCourses(data.courses))
+      .then(data => setCourses(data.courses || []))
       .catch(err => console.error('Error:', err));
   }, []);
 
