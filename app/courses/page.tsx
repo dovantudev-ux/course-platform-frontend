@@ -1,4 +1,54 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+
+interface Course {
+  id: string;
+  title: string;
+  description: string;
+  price: string;
+  discountPrice: string | null;
+  thumbnailUrl: string | null;
+  level: string;
+  instructor: {
+    fullName: string;
+  };
+  category: {
+    name: string;
+  };
+  _count: {
+    enrollments: number;
+    reviews: number;
+  };
+}
+
 export default function CoursesPage() {
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/courses`)
+      .then(res => res.json())
+      .then(data => {
+        setCourses(data.courses);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error fetching courses:', err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center text-white text-xl">Loading courses...</div>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <div className="container mx-auto px-4 py-8">
@@ -17,9 +67,9 @@ export default function CoursesPage() {
           />
           <select className="px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white focus:outline-none focus:border-purple-500">
             <option>All Categories</option>
-            <option>Web Development</option>
+            <option>Artificial Intelligence</option>
             <option>Data Science</option>
-            <option>Design</option>
+            <option>Web Development</option>
           </select>
           <select className="px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white focus:outline-none focus:border-purple-500">
             <option>All Levels</option>
@@ -36,34 +86,34 @@ export default function CoursesPage() {
 
         {/* Course Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-            <div key={i} className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden hover:border-purple-500/50 transition-all group cursor-pointer">
+          {courses.map((course) => (
+            <div key={course.id} className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden hover:border-purple-500/50 transition-all group cursor-pointer">
               <div className="h-48 bg-gradient-to-br from-blue-500/20 to-purple-500/20 relative">
-                <div className="absolute top-3 right-3 px-3 py-1 bg-purple-600 text-white text-sm rounded-full">
-                  Bestseller
-                </div>
+                {course.discountPrice && (
+                  <div className="absolute top-3 right-3 px-3 py-1 bg-purple-600 text-white text-sm rounded-full">
+                    {Math.round((1 - parseFloat(course.discountPrice) / parseFloat(course.price)) * 100)}% OFF
+                  </div>
+                )}
               </div>
               <div className="p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xs text-purple-400 font-semibold">WEB DEVELOPMENT</span>
+                  <span className="text-xs text-purple-400 font-semibold uppercase">{course.category.name}</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-purple-400 transition-colors line-clamp-2">
-                  Complete Web Development Bootcamp 2026
+                  {course.title}
                 </h3>
                 <p className="text-sm text-gray-400 mb-3 line-clamp-2">
-                  Learn HTML, CSS, JavaScript, React, Node.js and more
+                  {course.description}
                 </p>
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="flex items-center">
-                    <span className="text-yellow-400 text-sm">★★★★★</span>
-                    <span className="text-white text-sm ml-1">4.8</span>
-                  </div>
-                  <span className="text-gray-400 text-sm">(2,345)</span>
+                  <span className="text-sm text-gray-400">by {course.instructor.fullName}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="text-2xl font-bold text-white">$49</span>
-                    <span className="text-sm text-gray-400 line-through ml-2">$199</span>
+                    <span className="text-2xl font-bold text-white">${course.discountPrice || course.price}</span>
+                    {course.discountPrice && (
+                      <span className="text-sm text-gray-400 line-through ml-2">${course.price}</span>
+                    )}
                   </div>
                   <button className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm hover:bg-purple-700 transition-colors">
                     View
@@ -73,29 +123,7 @@ export default function CoursesPage() {
             </div>
           ))}
         </div>
-
-        {/* Pagination */}
-        <div className="flex justify-center gap-2 mt-12">
-          <button className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white hover:bg-white/20 transition-all">
-            Previous
-          </button>
-          {[1, 2, 3, 4, 5].map((page) => (
-            <button
-              key={page}
-              className={`px-4 py-2 rounded-lg transition-all ${
-                page === 1
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20'
-              }`}
-            >
-              {page}
-            </button>
-          ))}
-          <button className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white hover:bg-white/20 transition-all">
-            Next
-          </button>
-        </div>
       </div>
     </main>
-  )
+  );
 }
