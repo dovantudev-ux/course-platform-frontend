@@ -1,6 +1,25 @@
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Navigation */}
+      <nav className="border-b border-white/10 backdrop-blur-sm bg-white/5">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-8">
+              <a href="/" className="text-2xl font-bold text-white">CourseHub</a>
+              <div className="hidden md:flex items-center gap-6">
+                <a href="/courses" className="text-gray-300 hover:text-white transition-colors">Courses</a>
+                <a href="/dashboard" className="text-gray-300 hover:text-white transition-colors">My Learning</a>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <a href="/auth" className="px-4 py-2 text-white hover:text-purple-400 transition-colors">Sign In</a>
+              <a href="/auth" className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition-all">Get Started</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       <div className="container mx-auto px-4 py-16">
         {/* Hero Section */}
         <section className="text-center py-20">
