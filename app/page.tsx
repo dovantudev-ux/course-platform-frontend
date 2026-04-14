@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 interface Course {
   id: string;
@@ -25,16 +26,12 @@ export default function HomePage() {
       <nav className="border-b border-white/10 backdrop-blur-sm bg-white/5">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-8">
-              <a href="/" className="text-2xl font-bold text-white">CourseHub</a>
-              <div className="hidden md:flex items-center gap-6">
-                <a href="/courses" className="text-gray-300 hover:text-white transition-colors">Courses</a>
-                <a href="/dashboard" className="text-gray-300 hover:text-white transition-colors">My Learning</a>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <a href="/auth" className="px-4 py-2 text-white hover:text-purple-400 transition-colors">Sign In</a>
-              <a href="/auth" className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition-all">Get Started</a>
+            <Link href="/" className="text-2xl font-bold text-white">CourseHub</Link>
+            <div className="flex items-center gap-6">
+              <Link href="/courses" className="text-gray-300 hover:text-white transition-colors">Courses</Link>
+              <Link href="/dashboard" className="text-gray-300 hover:text-white transition-colors">My Learning</Link>
+              <Link href="/auth" className="px-4 py-2 text-white hover:text-purple-400 transition-colors">Sign In</Link>
+              <Link href="/auth" className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition-all">Get Started</Link>
             </div>
           </div>
         </div>
@@ -50,9 +47,9 @@ export default function HomePage() {
             Discover thousands of courses from expert instructors. Start learning today and unlock your potential.
           </p>
           <div className="flex gap-4 justify-center">
-            <a href="/courses" className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+            <Link href="/courses" className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all">
               Explore Courses
-            </a>
+            </Link>
             <button className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-lg font-semibold border border-white/20 hover:bg-white/20 transition-all">
               Become Instructor
             </button>
@@ -80,7 +77,7 @@ export default function HomePage() {
           <h2 className="text-4xl font-bold text-white mb-12 text-center">Featured Courses</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {courses.map((course) => (
-              <div key={course.id} className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden hover:border-purple-500/50 transition-all group">
+              <Link key={course.id} href={`/courses/${course.id}`} className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden hover:border-purple-500/50 transition-all group">
                 <div className="h-48 bg-gradient-to-br from-blue-500/20 to-purple-500/20"></div>
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-purple-400 transition-colors line-clamp-2">
@@ -89,12 +86,12 @@ export default function HomePage() {
                   <p className="text-gray-400 mb-4">Learn the fundamentals and advanced concepts</p>
                   <div className="flex justify-between items-center">
                     <span className="text-2xl font-bold text-white">${course.discountPrice || course.price}</span>
-                    <a href="/courses" className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm hover:bg-purple-700 transition-colors">
+                    <span className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm group-hover:bg-purple-700 transition-colors">
                       Enroll Now
-                    </a>
+                    </span>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </section>
@@ -102,4 +99,3 @@ export default function HomePage() {
     </main>
   );
 }
-// Updated Mon Apr 13 21:31:39 +07 2026
